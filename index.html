@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>내 사번 찾기</title>
+    <style>
+        body {
+            font-family: "Nanum Gothic", sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #343a40;
+        }
+        .search-container {
+            max-width: 600px;
+            margin: 0 auto 20px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .search-container label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #495057;
+        }
+        .search-container input {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+        }
+        .search-container button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .search-container button:hover {
+            background-color: #0056b3;
+        }
+        #searchResults {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #dee2e6;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #e9ecef;
+        }
+    </style>
+</head>
+<body>
+    <h1>내 사번 찾기</h1>
+    <div class="search-container">
+        <label for="searchName">이름 검색:</label>
+        <input type="text" id="searchName" name="searchName" placeholder="이름을 넣어주세요.">
+        <button onclick="searchEmployee()">검색</button>
+    </div>
+    <div id="searchResults"></div>
+    <table>
+        <thead>
+            <tr>
+                <th>사원번호</th>
+                <th>사원명</th>
+                <th>소속</th>
+            </tr>
+        </thead>
+        <tbody id="employeeTable">
+            <tr><td>P9710001</td><td>정형찬</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P1806001</td><td>정성호</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P0210001</td><td>권태준</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P0904001</td><td>배상건</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P1007001</td><td>김정수</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P1809001</td><td>곽병철</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P0503001</td><td>최창길</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P1203001</td><td>허양열</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P1908001</td><td>이동원</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P2110002</td><td>김종원</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P2202001</td><td>이경수</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P2402002</td><td>김동현</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P0703001</td><td>남동수</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P1003001</td><td>김태환</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P1803001</td><td>이세범</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P1901001</td><td>이준식</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P1906002</td><td>허우식</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P2101001</td><td>이상혁</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P2307001</td><td>박민식</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P2102001</td><td>이명진</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P2110001</td><td>김승하</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P2402001</td><td>장우수</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P1305001</td><td>송영보</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P1703001</td><td>김순용</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P1804001</td><td>서영민</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P1808001</td><td>오세호</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P2203001</td><td>이치환</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P2208001</td><td>김태우</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P1307001</td><td>김정호</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P1906003</td><td>김경석</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P1006001</td><td>김경종</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P1804002</td><td>우지수</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P2204001</td><td>최창연</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P1004001</td><td>강형민</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P1609001</td><td>이상훈</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P2206001</td><td>김예지</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P0701001</td><td>우재범</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P1403001</td><td>류규하</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P1002001</td><td>김달현</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P1306001</td><td>유승진</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P1610001</td><td>이나경</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P2205001</td><td>신부경</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P0909001</td><td>신정식</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P0701002</td><td>김창우</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P1802001</td><td>이종우</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P1810001</td><td>설기영</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P2001001</td><td>하수규</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P1501001</td><td>김종운</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P1411001</td><td>김수용</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P1606001</td><td>김성진</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P1906004</td><td>김태형</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P2406001</td><td>유승준</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P2201001</td><td>송성호</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P2403002</td><td>김민우</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P2401001</td><td>신승욱</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P2201002</td><td>김명섭</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P2312002</td><td>박동민</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P1709001</td><td>박현찬</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P1803002</td><td>박석균</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P1904001</td><td>이무진</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P1906001</td><td>김상호</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P1908002</td><td>최세영</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P2106001</td><td>박준호</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P0410001</td><td>권태화</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P2308001</td><td>박길호</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P1805001</td><td>전성원</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P2206002</td><td>박준홍</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P0409001</td><td>정원</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P0301001</td><td>지규호</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P1411002</td><td>곽영한</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P2107001</td><td>장지혜</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P0612001</td><td>김연준</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P2312001</td><td>김한영</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P1402001</td><td>임지영</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P1709002</td><td>김희진</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P2305001</td><td>정가은</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P2310001</td><td>이재근</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P2310002</td><td>구운모</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P2310004</td><td>박광희</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P2310005</td><td>윤채영</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P2310006</td><td>정인용</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P2310003</td><td>조영준</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P2207001</td><td>소찬호</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P2311001</td><td>박병준</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P2311002</td><td>손상우</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P2401002</td><td>박상길</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P2403001</td><td>이성진</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P2405003</td><td>박동민</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P2405001</td><td>김규삼</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P2405002</td><td>홍석현</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P1907001</td><td>TAMENORI MICHIHIRO</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P1907002</td><td>손병호</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P1803003</td><td>Nguyen Thi Yen</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P1501002</td><td>Tran Van Toan</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P2004001</td><td>Nguyen Hoang Phuong</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P1612002</td><td>Cuong Trinh Anh</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P1304001</td><td>Dinh Huu Nam</td><td>(주)에스제이이노테크</td></tr>
+            <tr><td>P2005005</td><td>강승준</td><td>(주)성호정밀</td></tr>
+            <tr><td>P2005006</td><td>김세현</td><td>(주)성호정밀</td></tr>
+            <tr><td>P2005001</td><td>김종오</td><td>(주)성호정밀</td></tr>
+            <tr><td>P2205002</td><td>김종현</td><td>(주)성호정밀</td></tr>
+            <tr><td>P2312005</td><td>박영진</td><td>(주)성호정밀</td></tr>
+            <tr><td>P2402004</td><td>박주용</td><td>(주)성호정밀</td></tr>
+            <tr><td>P2110003</td><td>신홍규</td><td>(주)성호정밀</td></tr>
+            <tr><td>P2312004</td><td>유태종</td><td>(주)성호정밀</td></tr>
+            <tr><td>P1611001</td><td>유한경</td><td>(주)성호정밀</td></tr>
+            <tr><td>P2106002</td><td>이원달</td><td>(주)성호정밀</td></tr>
+            <tr><td>P2401004</td><td>이종수</td><td>(주)성호정밀</td></tr>
+            <tr><td>P1808002</td><td>이종학</td><td>(주)성호정밀</td></tr>
+            <tr><td>P1906005</td><td>임병환</td><td>(주)성호정밀</td></tr>
+            <tr><td>P2401003</td><td>장영환</td><td>(주)성호정밀</td></tr>
+            <tr><td>P2005003</td><td>정대수</td><td>(주)성호정밀</td></tr>
+            <tr><td>P2005002</td><td>정만기</td><td>(주)성호정밀</td></tr>
+            <tr><td>P2012001</td><td>정승현</td><td>(주)성호정밀</td></tr>
+            <tr><td>P2005004</td><td>조원준</td><td>(주)성호정밀</td></tr>
+            <tr><td>P1005001</td><td>권기동</td><td>(주)성진에프에이</td></tr>
+            <tr><td>P2310007</td><td>권윤성</td><td>(주)성진에프에이</td></tr>
+            <tr><td>P2404001</td><td>권주열</td><td>(주)성진에프에이</td></tr>
+            <tr><td>P2108001</td><td>김갑수</td><td>(주)성진에프에이</td></tr>
+            <tr><td>P1609003</td><td>김경호</td><td>(주)성진에프에이</td></tr>
+            <tr><td>P2405004</td><td>김동희</td><td>(주)성진에프에이</td></tr>
+            <tr><td>P1907003</td><td>김락현</td><td>(주)성진에프에이</td></tr>
+            <tr><td>P2312003</td><td>김민우</td><td>(주)성진에프에이</td></tr>
+            <tr><td>P1612001</td><td>김성훈</td><td>(주)성진에프에이</td></tr>
+            <tr><td>P2203002</td><td>김용철</td><td>(주)성진에프에이</td></tr>
+            <tr><td>P1604001</td><td>류치호</td><td>(주)성진에프에이</td></tr>
+            <tr><td>P1606002</td><td>박종팔</td><td>(주)성진에프에이</td></tr>
+            <tr><td>P2203003</td><td>배경식</td><td>(주)성진에프에이</td></tr>
+            <tr><td>P2303002</td><td>배진희</td><td>(주)성진에프에이</td></tr>
+            <tr><td>P2403003</td><td>선호곤</td><td>(주)성진에프에이</td></tr>
+            <tr><td>P2207002</td><td>신배웅</td><td>(주)성진에프에이</td></tr>
+            <tr><td>P1905001</td><td>우상수</td><td>(주)성진에프에이</td></tr>
+            <tr><td>P1903001</td><td>윤정우</td><td>(주)성진에프에이</td></tr>
+            <tr><td>P1609002</td><td>이은희</td><td>(주)성진에프에이</td></tr>
+            <tr><td>P1911001</td><td>이재봉</td><td>(주)성진에프에이</td></tr>
+            <tr><td>P2209001</td><td>이혜리</td><td>(주)성진에프에이</td></tr>
+            <tr><td>P2405005</td><td>정성화</td><td>(주)성진에프에이</td></tr>
+            <tr><td>P2303001</td><td>최종선</td><td>(주)성진에프에이</td></tr>
+            <tr><td>P2402003</td><td>홍준택</td><td>(주)성진에프에이</td></tr>
+        </tbody>
+    </table>
+
+    <script>
+    function searchEmployee() {
+        const searchName = document.getElementById('searchName').value;
+        const table = document.getElementById('employeeTable');
+        const rows = table.getElementsByTagName('tr');
+        let results = '';
+        const matchingEmployees = [];
+
+        for (let i = 0; i < rows.length; i++) {
+            const cells = rows[i].getElementsByTagName('td');
+            if (cells[1].innerText.includes(searchName)) {
+                matchingEmployees.push({ id: cells[0].innerText, dept: cells[2].innerText });
+                results += `<p>사번: ${cells[0].innerText}<br>소속: ${cells[2].innerText}</p>`;
+            }
+        }
+
+        const searchResultsDiv = document.getElementById('searchResults');
+        if (matchingEmployees.length > 0) {
+            if (matchingEmployees.length === 1) {
+                copyToClipboard(matchingEmployees[0].id);
+            } else {
+                results += '<p>사번을 선택하세요:</p>';
+                results += '<ul>';
+                matchingEmployees.forEach(emp => {
+                    results += `<li><button onclick="copyToClipboard('${emp.id}')">${emp.id}</button> - ${emp.dept}</li>`;
+                });
+                results += '</ul>';
+            }
+            searchResultsDiv.innerHTML = results;
+        } else {
+            searchResultsDiv.innerHTML = '<p>리스트에 없는 직원은 han0e@sjinnotech.com으로 문의바랍니다.</p>';
+        }
+    }
+
+    function copyToClipboard(text) {
+        navigator.clipboard.writeText(text).then(function() {
+            alert('사번이 복사되었습니다: ' + text);
+        }, function(err) {
+            alert('복사에 실패했습니다: ', err);
+        });
+    }
+    </script>
+</body>
+</html>
