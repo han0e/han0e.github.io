@@ -131,7 +131,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 </head>
 <body>
-    <h1>내 사번 찾기</h1>
+    <h1>내 사원번호호 찾기</h1>
     <div class="search-container">
         <label for="searchName">사원명으로 찾기</label>
         <input type="text" id="searchName" name="searchName" placeholder="사원명 입력">
@@ -319,7 +319,7 @@
             const cells = rows[i].getElementsByTagName('td');
             if (cells[1].innerText.includes(searchName)) {
                 matchingEmployees.push({ id: cells[0].innerText, dept: cells[2].innerText });
-                results += `<p>사원명 : ${cells[1].innerText}<br>사원번호: ${cells[0].innerText}<br>소         속: ${cells[2].innerText}</p>`;
+                results += `<p>사원명 : ${cells[1].innerText}<br>사원번호: ${cells[0].innerText}<br>소속: ${cells[2].innerText}</p>`;
             }
         }
 
