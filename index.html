@@ -4,7 +4,7 @@
 	<link rel="icon" href="https://i.ibb.co/LnZLzw7/favicon-32x32.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>내 사번 찾기</title>
+    <title>내 사원번호 찾기</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-material-ui/material-ui.css">
         <style>
         @import url('https://cdn.rawgit.com/moonspam/NanumSquare/master/nanumsquare.css');
@@ -319,7 +319,7 @@
             const cells = rows[i].getElementsByTagName('td');
             if (cells[1].innerText.includes(searchName)) {
                 matchingEmployees.push({ id: cells[0].innerText, dept: cells[2].innerText });
-                results += `<p>사번: ${cells[0].innerText}<br>소속: ${cells[2].innerText}</p>`;
+                results += `<p>사원명 : ${cells[1].innerText}<br>사원번호: ${cells[0].innerText}<br>소         속: ${cells[2].innerText}</p>`;
             }
         }
 
