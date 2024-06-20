@@ -4,12 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>내 사번 찾기</title>
-    <style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-material-ui/material-ui.css">
+        <style>
+        @import url('https://cdn.rawgit.com/moonspam/NanumSquare/master/nanumsquare.css');
+        
         body {
-            font-family: "Nanum Gothic", sans-serif;
+            font-family: 'NanumSquare', sans-serif;
             background-color: #f8f9fa;
             margin: 0;
             padding: 20px;
+            line-height: 1.6;
+            padding-bottom: 70px; /* 푸터 높이만큼 추가 패딩 */
         }
         h1 {
             text-align: center;
@@ -39,7 +44,7 @@
         .search-container button {
             width: 100%;
             padding: 10px;
-            background-color: #007bff;
+            background-color: #197BBD;
             border: none;
             border-radius: 5px;
             color: white;
@@ -47,7 +52,7 @@
             cursor: pointer;
         }
         .search-container button:hover {
-            background-color: #0056b3;
+            background-color: #156aa3;
         }
         #searchResults {
             max-width: 600px;
@@ -58,30 +63,82 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             margin-top: 20px;
         }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
+        .table-container div{
+            display: flex;
+            border: 1px solid black; /* border 표시 */
+            border-radius: 10px; /* radius 적용 */
+            overflow: hidden; /* 넘치는 건 감춤 */
         }
-        th, td {
+        .table-container table {
+            width: 100%;
+            max-width: 640px;
+            border-style: hidden; /* 두께 맞추기 위해 border-style 숨김 */
+            border-collapse: collapse;
+            margin:20px auto;
+
+        }
+        .table-container th, td {
             border: 1px solid #dee2e6;
             padding: 12px;
             text-align: left;
         }
-        th {
+        .table-container th {
             background-color: #e9ecef;
         }
+        .table-container #employeeTable tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        #employeeTable tr:hover {
+            background-color: #ddd;
+        }
+        #employeeTable th {
+            background-color: #197BBD;
+            color: white;
+        }
+        #employeeTable th,
+        #employeeTable td {
+            padding: 10px;
+            text-align: left;
+        }
+        /* 테이블의 첫 번째 행과 마지막 행에 대한 스타일 */
+        #employeeTable thead th:first-child {
+            border-top-left-radius: 10px;
+        }
+        #employeeTable thead th:last-child {
+            border-top-right-radius: 10px;
+        }
+        #employeeTable tbody tr:last-child td:first-child {
+            border-bottom-left-radius: 10px;
+        }
+        #employeeTable tbody tr:last-child td:last-child {
+            border-bottom-right-radius: 10px;
+        }
+        footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            font-size: 0.8em;
+            color: #888;
+            background-color: #f8f9fa;
+            padding: 5px 0;
+            border-top: 1px solid #dee2e6;
+            line-height: 1;
+        }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 </head>
 <body>
     <h1>내 사번 찾기</h1>
     <div class="search-container">
-        <label for="searchName">이름 검색:</label>
-        <input type="text" id="searchName" name="searchName" placeholder="이름을 넣어주세요.">
-        <button onclick="searchEmployee()">검색</button>
+        <label for="searchName">사원명으로 찾기</label>
+        <input type="text" id="searchName" name="searchName" placeholder="사원명 입력">
+        <button onclick="searchEmployee()">찾기</button>
     </div>
     <div id="searchResults"></div>
-    <table>
+		<div class="table-container">
+		<table id="employeeTable">
         <thead>
             <tr>
                 <th>사원번호</th>
@@ -89,7 +146,7 @@
                 <th>소속</th>
             </tr>
         </thead>
-        <tbody id="employeeTable">
+        <tbody>
             <tr><td>P9710001</td><td>정형찬</td><td>(주)에스제이이노테크</td></tr>
             <tr><td>P1806001</td><td>정성호</td><td>(주)에스제이이노테크</td></tr>
             <tr><td>P0210001</td><td>권태준</td><td>(주)에스제이이노테크</td></tr>
@@ -231,11 +288,28 @@
             <tr><td>P2402003</td><td>홍준택</td><td>(주)성진에프에이</td></tr>
         </tbody>
     </table>
+    </div>
+        <footer>
+        
+        <a href="http://portal.sjinnotech.com/"><img src="https://i.ibb.co/rQb7Z5m/Transparent.png" alt="Transparent" border="0" height="25"></a><br>ⓒ 2024. han0e@sjinnotech.com. All rights reserved.
+    </footer>
 
     <script>
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'center-center',
+        showConfirmButton: false,
+        timer: 1500,
+        timerProgressBar: false,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    });
+
     function searchEmployee() {
         const searchName = document.getElementById('searchName').value;
-        const table = document.getElementById('employeeTable');
+        const table = document.getElementById('employeeTable').getElementsByTagName('tbody')[0];
         const rows = table.getElementsByTagName('tr');
         let results = '';
         const matchingEmployees = [];
@@ -262,15 +336,22 @@
             }
             searchResultsDiv.innerHTML = results;
         } else {
-            searchResultsDiv.innerHTML = '<p>검색결과가 나오지않는 직원은 han0e@sjinnotech.com으로 문의바랍니다.</p>';
+            searchResultsDiv.innerHTML = '<p>No results found</p>';
         }
     }
 
     function copyToClipboard(text) {
         navigator.clipboard.writeText(text).then(function() {
-            alert('사번이 복사되었습니다: ' + text + 'Ctrl+V하여 사용해주세요.');
+            Toast.fire({
+                icon: 'success',
+                title: '사번이 복사되었습니다.\n' + text + '\nCtrl+V하여 사용해주세요.'
+            });
         }, function(err) {
-            alert('복사에 실패했습니다: ', err);
+            Toast.fire({
+                icon: 'error',
+                title: '복사에 실패했습니다.',
+                text: err
+            });
         });
     }
     </script>
