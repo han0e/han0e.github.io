@@ -262,13 +262,13 @@
             }
             searchResultsDiv.innerHTML = results;
         } else {
-            searchResultsDiv.innerHTML = '<p>리스트에 없는 직원은 han0e@sjinnotech.com으로 문의바랍니다.</p>';
+            searchResultsDiv.innerHTML = '<p>검색결과가 나오지않는 직원은 han0e@sjinnotech.com으로 문의바랍니다.</p>';
         }
     }
 
     function copyToClipboard(text) {
         navigator.clipboard.writeText(text).then(function() {
-            alert('사번이 복사되었습니다: ' + text);
+            alert('사번이 복사되었습니다: ' + text + 'Ctrl+V하여 사용해주세요.');
         }, function(err) {
             alert('복사에 실패했습니다: ', err);
         });
