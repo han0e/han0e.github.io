@@ -1,495 +1,9 @@
-<html lang="ko"><head><script>(function(firebaseConfig, initialAuthToken, appId) {
-        window.__firebase_config = firebaseConfig;
-        window.__initial_auth_token = initialAuthToken;
-        window.__app_id = appId;
-            })("\n{\n  \"apiKey\": \"AIzaSyCqyCcs2R2e7AegGjvFAwG98wlamtbHvZY\",\n  \"authDomain\": \"bard-frontend.firebaseapp.com\",\n  \"projectId\": \"bard-frontend\",\n  \"storageBucket\": \"bard-frontend.firebasestorage.app\",\n  \"messagingSenderId\": \"175205271074\",\n  \"appId\": \"1:175205271074:web:2b7bd4d34d33bf38e6ec7b\"\n}\n","eyJhbGciOiJSUzI1NiIsImtpZCI6ImM0ODdlNzA0ZTM4NzM5MmM3MGM0MWJhMmFjZWNiZjIxOTY2ZDIxYmMiLCJ0eXAiOiJKV1QifQ.eyJzdWIiOiJmaXJlYmFzZS1hZG1pbnNkay1mYnN2Y0BiYXJkLWZyb250ZW5kLmlhbS5nc2VydmljZWFjY291bnQuY29tIiwiYXVkIjoiaHR0cHM6XC9cL2lkZW50aXR5dG9vbGtpdC5nb29nbGVhcGlzLmNvbVwvZ29vZ2xlLmlkZW50aXR5LmlkZW50aXR5dG9vbGtpdC52MS5JZGVudGl0eVRvb2xraXQiLCJ1aWQiOiIxMTEzNjQyMDE2ODM3Mjk4MTA3NSIsImlzcyI6ImZpcmViYXNlLWFkbWluc2RrLWZic3ZjQGJhcmQtZnJvbnRlbmQuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20iLCJjbGFpbXMiOnsiYXBwSWQiOiJjXzFhNTA1MGEwYWRiNDdkNTJfc2FsYXJpdW1faW50ZXJhY3RpdmVfbWFudWFsLTM0OSJ9LCJleHAiOjE3NTU1MDUxMzEsImlhdCI6MTc1NTUwMTUzMSwiYWxnIjoiUlMyNTYifQ.oSsl6x71C8Uu64v3X5kKowszE9O-QKuR4NTDnn35ChkwsqIrt0cLz5W_J9qi9T8C4L3mos2CujG2fiwtDV8SkG_bG3_VnDH8IAWQK1Wl4QHeJeMmIMioloMzBDtSG-P7H-bSmPgn9FDCsKM3UazG7yPmp9ClOnmZN5lrN7oNSKwMZJE8dlWcXzzJ6wsWSxDFp01nYhkc8FyXxgmiSCd2-PY2opW29ZeTgaE_ZS10BVgkvC8OltJ7fRa7XKiGYv19udUHTb4QjhsPloKzEObhWS2A62KPeIlVjlNedxyyV_YhUgVFzlmJzMoZKvU3pY6GWDJqGPk6FMFaejk-Axzwqw","c_1a5050a0adb47d52_salarium_interactive_manual-349")</script><script>(function() {
-  // Ensure this script is executed only once
-  if (window.firebaseAuthBridgeScriptLoaded) {
-    return;
-  }
-  window.firebaseAuthBridgeScriptLoaded = true;
-
-  let nextTokenPromiseId = 0;
-
-  // Stores { resolve, reject } for ongoing token requests
-  const pendingTokenPromises = {};
-
-  // Listen for messages from the Host Application
-  window.addEventListener('message', function(event) {
-
-    const messageData = event.data;
-
-  if (messageData && messageData.type === 'RESOLVE_NEW_FIREBASE_TOKEN') {
-      const { success, token, error, promiseId } = messageData ?? {};
-      if (pendingTokenPromises[promiseId]) {
-        if (success) {
-          pendingTokenPromises[promiseId].resolve(token);
-        } else {
-          pendingTokenPromises[promiseId].reject(new Error(error || 'Token refresh failed from host.'));
-        }
-        delete pendingTokenPromises[promiseId];
-      }
-    }
-  });
-
-  // Expose a function for the Generated App to request a new Firebase token
-  window.requestNewFirebaseToken = function() {
-    const currentPromiseId = nextTokenPromiseId++;
-    const promise = new Promise((resolve, reject) => {
-      pendingTokenPromises[currentPromiseId] = { resolve, reject };
-    });
-    if (window.parent && window.parent !== window) {
-      window.parent.postMessage({
-        type: 'REQUEST_NEW_FIREBASE_TOKEN',
-        promiseId: currentPromiseId
-      }, '*');
-    } else {
-      pendingTokenPromises[currentPromiseId].reject(new Error('No parent window to request token from.'));
-      delete pendingTokenPromises[currentPromiseId];
-    }
-    return promise;
-  };
-})();</script><script>
-let realOriginalGetUserMedia = null;
-if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-  realOriginalGetUserMedia = navigator.mediaDevices.getUserMedia.bind(navigator.mediaDevices);
-}
-
-(function() {
-  if (navigator.mediaDevices && navigator.mediaDevices.__proto__) {
-    try {
-      Object.defineProperty(navigator.mediaDevices.__proto__, 'getUserMedia', {
-        get: function() {
-          return undefined; // Or throw an error
-        },
-        configurable: false
-      });
-    } catch (error) {
-      console.error("Error defining prototype getter:", error);
-    }
-  }
-})();
-
-(function() {
-  const pendingMediaResolvers = {};
-  let nextMediaPromiseId = 0;
-
-  function requestMediaPermissions(constraints) {
-    const mediaPromiseId = nextMediaPromiseId++;
-    const promise = new Promise((resolve, reject) => {
-      pendingMediaResolvers[mediaPromiseId] = (granted) => {
-        delete pendingMediaResolvers[mediaPromiseId];
-        resolve(granted);
-      };
-    });
-
-    window.parent.postMessage({
-      type: 'requestMediaPermission',
-      constraints: constraints,
-      promiseId: mediaPromiseId,
-    }, '*');
-
-    return promise;
-  }
-
-  let originalGetUserMedia = realOriginalGetUserMedia;
-
-  function interceptGetUserMedia() {
-    if (navigator.mediaDevices) {
-      Object.defineProperty(navigator.mediaDevices, 'getUserMedia', {
-        value: function(constraints) {
-          return requestMediaPermissions(constraints).then((granted) => {
-            if (granted) {
-              if (originalGetUserMedia) {
-                return originalGetUserMedia(constraints);
-              } else {
-                throw new Error("Original getUserMedia not available.");
-              }
-            } else {
-              throw new DOMException('Permission denied', 'NotAllowedError');
-            }
-          });
-        },
-        writable: false,
-        configurable: false
-      });
-    }
-  }
-
-  interceptGetUserMedia();
-
-  const observer = new MutationObserver(function(mutationsList, observer) {
-    for (const mutation of mutationsList) {
-      if (mutation.type === 'reconfigured' && mutation.name === 'getUserMedia' && mutation.object === navigator.mediaDevices) {
-        interceptGetUserMedia();
-      } else if (mutation.type === 'attributes' && mutation.attributeName === 'getUserMedia' && mutation.target === navigator.mediaDevices) {
-        interceptGetUserMedia();
-      } else if (mutation.type === 'childList' && mutation.addedNodes) {
-        mutation.addedNodes.forEach(node => {
-          if (node === navigator.mediaDevices) {
-            interceptGetUserMedia();
-          }
-        });
-      }
-    }
-  });
-
-  function interceptSpeechRecognition() {
-    if (!window.SpeechRecognition && !window.webkitSpeechRecognition) {
-      return;
-    }
-
-    const OriginalSpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-
-    const SpeechRecognitionWrapper = function(...args) {
-      const recognizer = new OriginalSpeechRecognition(...args);
-      const originalStart = recognizer.start.bind(recognizer);
-
-      recognizer.start = function() {
-        requestMediaPermissions({ audio: true }).then(granted => {
-          if (granted) {
-            originalStart();
-          } else {
-            const errorEvent = new SpeechRecognitionErrorEvent('error');
-            errorEvent.error = 'not-allowed'; // This is the standard error for permission denial.
-            recognizer.dispatchEvent(errorEvent);
-          }
-        });
-      };
-
-      return recognizer;
-    };
-
-    SpeechRecognitionWrapper.prototype = OriginalSpeechRecognition.prototype;
-    SpeechRecognitionWrapper.prototype.constructor = SpeechRecognitionWrapper;
-
-    if (window.SpeechRecognition) {
-      window.SpeechRecognition = SpeechRecognitionWrapper;
-    }
-    if (window.webkitSpeechRecognition) {
-      window.webkitSpeechRecognition = SpeechRecognitionWrapper;
-    }
-  }
-
-  interceptSpeechRecognition();
-
-  window.addEventListener('message', function(event) {
-    if (event.data) {
-      if (event.data.type === 'resolveMediaPermission') {
-        const { promiseId, granted } = event.data;
-        if (pendingMediaResolvers[promiseId]) {
-          pendingMediaResolvers[promiseId](granted);
-        }
-      }
-    }
-  });
-
-})();</script><script>((function(modelInformation) {
-  const originalFetch = window.fetch;
-  // TODO: b/421908508 - Move these out of the script and match all generative AI model calls.
-  let googleLlmBaseApiUrls = [
-    'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.textModelName + ':streamGenerateContent',
-    'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.textModelName + ':generateContent',
-    'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.imageModelName + ':predict',
-    'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.imageModelName + ':predictLongRunning',
-    'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.imageEditModelName + ':generateContent',
-    'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.videoModelName + ':predict',
-    'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.videoModelName + ':predictLongRunning',
-    'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.ttsModelName + ':generateContent',
-  ];
-  modelInformation.deprecatedTextModelNames.forEach((modelName) => {
-    googleLlmBaseApiUrls.push(
-      'https://generativelanguage.googleapis.com/v1beta/models/' + modelName + ':streamGenerateContent',
-      'https://generativelanguage.googleapis.com/v1beta/models/' + modelName + ':generateContent',
-    );
-  });
-
-  const pendingFetchResolvers = {};
-  let nextPromiseId = 0;
-
-  function handleStringInput(input, optionsArgument) {
-    const actualUrl = input;
-    const fetchCallArgs = [actualUrl, optionsArgument];
-    const effectiveOptions = optionsArgument || {};
-    const bodyForApiKeyCheck = effectiveOptions.body;
-    const bodyForPostMessage = effectiveOptions.body;
-    return { actualUrl, fetchCallArgs, effectiveOptions, bodyForApiKeyCheck, bodyForPostMessage };
-  }
-
-  function handleRequestInput(input, optionsArgument) {
-    const actualUrl = input.url;
-    const fetchCallArgs = [input, optionsArgument];
-    const effectiveOptions = { method: input.method, headers: new Headers(input.headers) };
-    let bodyForApiKeyCheck;
-    let bodyForPostMessage;
-
-    if (optionsArgument) {
-      if (optionsArgument.method) effectiveOptions.method = optionsArgument.method;
-      if (optionsArgument.headers) effectiveOptions.headers = new Headers(optionsArgument.headers);
-      if ('body' in optionsArgument) {
-        bodyForApiKeyCheck = optionsArgument.body;
-        bodyForPostMessage = optionsArgument.body;
-      } else {
-        bodyForApiKeyCheck = undefined;
-        bodyForPostMessage = input.body;
-      }
-    } else {
-      bodyForApiKeyCheck = undefined;
-      bodyForPostMessage = input.body;
-    }
-    return { actualUrl, fetchCallArgs, effectiveOptions, bodyForApiKeyCheck, bodyForPostMessage };
-  }
-
-  window.fetch = function(input, optionsArgument) {
-    let actualUrl;
-    let fetchCallArgs;
-    let effectiveOptions = {};
-    let bodyForApiKeyCheck;
-    let bodyForPostMessage;
-
-    if (typeof input === 'string') {
-      ({actualUrl, fetchCallArgs, effectiveOptions, bodyForApiKeyCheck, bodyForPostMessage} = handleStringInput(input, optionsArgument));
-    } else if (input instanceof Request) {
-      ({actualUrl, fetchCallArgs, effectiveOptions, bodyForApiKeyCheck, bodyForPostMessage} = handleRequestInput(input, optionsArgument));
-    } else {
-      return originalFetch.apply(window, [input, optionsArgument]);
-    }
-
-    effectiveOptions.method = effectiveOptions.method || 'GET';
-    if (!effectiveOptions.headers) {
-      effectiveOptions.headers = new Headers();
-    }
-
-
-    if (typeof actualUrl === 'string' && googleLlmBaseApiUrls.some((url) => actualUrl.startsWith(url))) {
-      let apiKeyIsNull = true;
-
-      const regex = new RegExp("models/([^:]+)");
-      const modelNameMatch = actualUrl.match(regex);
-      const modelName = modelNameMatch ? modelNameMatch[1] : 'unspecified';
-
-
-      try {
-        const urlObject = new URL(actualUrl);  // Use URL object for robust parsing
-        const apiKeyParam = urlObject.searchParams.get('key');
-        if (apiKeyParam) {
-          apiKeyIsNull = false;
-        }
-      } catch (e) {
-        // Continue checks even if URL parsing fails
-      }
-
-      if (apiKeyIsNull && effectiveOptions.headers) {
-        const h = new Headers(effectiveOptions.headers);
-        const apiKeyHeaderValue = h.get('X-API-Key') || h.get('x-api-key');
-        if (apiKeyHeaderValue) {
-          apiKeyIsNull = false;
-          return originalFetch.apply(window, fetchCallArgs);
-        }
-      }
-
-      if (apiKeyIsNull && effectiveOptions.method && ['POST', 'PUT', 'PATCH'].includes(effectiveOptions.method.toUpperCase()) && typeof bodyForApiKeyCheck === 'string') {
-        try {
-          const bodyData = JSON.parse(bodyForApiKeyCheck);
-          if (bodyData && bodyData.apiKey) {
-            apiKeyIsNull = false;
-            return originalFetch.apply(window, fetchCallArgs);
-          }
-        } catch (e) {
-          // Ignore JSON parsing errors
-        }
-      }
-
-      if(apiKeyIsNull) {
-        const promiseId = nextPromiseId++;
-        const promise = new Promise((resolve) => {
-          pendingFetchResolvers[promiseId] = (resolvedResponse) => {
-            delete pendingFetchResolvers[promiseId];
-            resolve(resolvedResponse);
-          };
-        });
-
-        let serializedBodyForPostMessage;
-        if (typeof bodyForPostMessage === 'string' || bodyForPostMessage == null) {
-            serializedBodyForPostMessage = bodyForPostMessage;
-        } else if (bodyForPostMessage instanceof ReadableStream) {
-            serializedBodyForPostMessage = null;
-        } else {
-            try {
-                serializedBodyForPostMessage = JSON.stringify(bodyForPostMessage);
-            } catch (e) {
-                serializedBodyForPostMessage = null;
-            }
-        }
-
-        const messageOptions = {
-            method: effectiveOptions.method,
-            headers: Object.fromEntries(new Headers(effectiveOptions.headers).entries()),
-            body: serializedBodyForPostMessage
-        };
-
-        window.parent.postMessage({
-          type: 'requestFetch',
-          url: actualUrl,
-          modelName: modelName,
-          options: messageOptions,
-          promiseId: promiseId,
-        }, '*');
-
-        return promise;
-      }
-      return originalFetch.apply(window, fetchCallArgs);
-    }
-    return originalFetch.apply(window, fetchCallArgs);
-  };
-
-  window.addEventListener('message', function(event) {
-    if (event.data && event.data.type === 'resolveFetch') {
-      const { promiseId, response } = event.data;
-      if (pendingFetchResolvers[promiseId]) {
-        try {
-          const reconstructedResponse = new Response(response.body, {
-            status: response.status,
-            statusText: response.statusText,
-            headers: new Headers(response.headers),
-          });
-          pendingFetchResolvers[promiseId](reconstructedResponse);
-        } catch (error) {
-          pendingFetchResolvers[promiseId](new Response(null, { status: 500, statusText: "Interceptor Response Reconstruction Error" }));
-        }
-      }
-    }
-  });
-
-}))({"textModelName":"gemini-2.5-flash-preview-05-20","imageModelName":"imagen-3.0-generate-002","imageEditModelName":"gemini-2.0-flash-preview-image-generation","videoModelName":"veo-2.0-generate-001","ttsModelName":"gemini-2.5-flash-preview-tts","deprecatedTextModelNames":["gemini-2.0-flash","gemini-2.5-flash-preview-04-17"]})</script><script>(function() {
-  const originalConsoleLog = console.log;
-  const originalConsoleError = console.error;
-
-    /**
-   * Normalizes an error event or a promise rejection reason into a structured error object.
-   * @param {*} errorEventOrReason The error object or reason.
-   * @return {object} Structured error data { message, name, stack }.
-   */
-  function getErrorObject(errorEventOrReason) {
-    if (errorEventOrReason instanceof Error) {
-      return {
-        message: errorEventOrReason.message,
-        name: errorEventOrReason.name,
-        stack: errorEventOrReason.stack,
-      };
-    }
-    // Fallback for non-Error objects.
-    try {
-      return {
-        message: JSON.stringify(errorEventOrReason),
-        name: 'UnknownErrorType',
-        stack: null,
-      };
-    } catch (e) {
-      return {
-        message: String(errorEventOrReason),
-        name: 'UnknownErrorTypeNonStringifiable',
-        stack: null,
-      };
-    }
-  }
-
-  /**
-   * Converts an array of arguments (from log/error) into a single string.
-   * Handles Error objects specially to include their message and stack.
-   * @param {Array<*>} args - Arguments passed to console methods.
-   * @return {string} A string representation of the arguments.
-   */
-  function stringifyArgs(args) {
-    return args
-      .map((arg) => {
-        if (arg instanceof Error) {
-          const {message, stack} = arg;
-          return `Error: ${message}${stack ? ('\nStack: ' + stack) : ''}`;
-        }
-        if (typeof arg === 'object' && arg !== null) {
-          try {
-            return JSON.stringify(arg);
-          } catch (error) {
-            return '[Circular Object]';
-          }
-        } else {
-          return String(arg);
-        }
-      })
-      .join(' ');
-  }
-
-  console.log = function(...args) {
-    const logString = stringifyArgs(args);
-    window.parent.postMessage({ type: 'log', message: logString }, '*');
-    originalConsoleLog.apply(console, args);
-  };
-
-  console.error = function(...args) {
-    let errorData;
-    if (args.length > 0 && args[0] instanceof Error) {
-      const err = args[0];
-      // If the first arg is an Error, capture its details.
-      errorData = {
-        type: 'error',
-        source: 'CONSOLE_ERROR',
-        ...getErrorObject(err),
-        rawArgsString: stringifyArgs(args.slice(1)),
-        timestamp: new Date().toISOString(),
-      };
-    } else {
-      // If not an Error object, treat all args as a general error message.
-      errorData = {
-        type: 'error',
-        source: 'CONSOLE_ERROR',
-        message: stringifyArgs(args),
-        name: 'ConsoleLoggedError',
-        stack: null,
-        timestamp: new Date().toISOString(),
-      };
-    }
-    window.parent.postMessage(errorData, '*');
-    originalConsoleError.apply(console, args);
-  };
-
-  // Listen for global unhandled synchronous errors.
-  window.addEventListener('error', function(event) {
-    const errorDetails = event.error ? getErrorObject(event.error) : {
-      message: event.message,
-      name: 'GlobalError',
-      stack: null,
-      filename: event.filename,
-      lineno: event.lineno,
-      colno: event.colno,
-    };
-
-    window.parent.postMessage({
-      type: 'error',
-      source: 'global',
-      ...errorDetails,
-      message: errorDetails.message || event.message,
-      timestamp: new Date().toISOString(),
-    }, '*');
-  });
-
-  // Listen for unhandled promise rejections (asynchronous errors).
-  window.addEventListener('unhandledrejection', function(event) {
-    const errorDetails = getErrorObject(event.reason);
-
-    window.parent.postMessage({
-      type: 'error',
-      source: 'unhandledrejection',
-      ...errorDetails,
-      message: errorDetails.message || 'Unhandled Promise Rejection',
-      timestamp: new Date().toISOString(),
-    }, '*');
-  });
-
-})();</script>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Salarium 사용자 매뉴얼</title>
+    <title>Salarium 대화형 사용자 매뉴얼</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Chosen Palette: Warm Neutrals -->
     <!-- Application Structure Plan: A user-friendly, single-page application featuring a fixed sidebar for navigation and a dynamic main content area. This structure allows users to instantly access any section of the manual without linear scrolling, which is ideal for documentation. Clicking a navigation link updates the main content view using JavaScript, providing a seamless experience. This non-linear approach is more efficient for users seeking specific information compared to a traditional long-scroll page. -->
@@ -520,7 +34,7 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
             transform: rotate(180deg);
         }
     </style>
-<style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.mx-auto{margin-left:auto;margin-right:auto}.mb-2{margin-bottom:0.5rem}.mb-4{margin-bottom:1rem}.mb-8{margin-bottom:2rem}.mr-2{margin-right:0.5rem}.mt-2{margin-top:0.5rem}.mt-auto{margin-top:auto}.flex{display:flex}.grid{display:grid}.hidden{display:none}.h-60{height:15rem}.h-8{height:2rem}.h-80{height:20rem}.min-h-screen{min-height:100vh}.w-8{width:2rem}.w-full{width:100%}.max-w-4xl{max-width:56rem}.flex-1{flex:1 1 0%}.flex-shrink-0{flex-shrink:0}.cursor-pointer{cursor:pointer}.list-inside{list-style-position:inside}.list-decimal{list-style-type:decimal}.list-disc{list-style-type:disc}.grid-cols-1{grid-template-columns:repeat(1, minmax(0, 1fr))}.flex-col{flex-direction:column}.items-start{align-items:flex-start}.items-center{align-items:center}.justify-center{justify-content:center}.gap-4{gap:1rem}.space-x-4 > :not([hidden]) ~ :not([hidden]){--tw-space-x-reverse:0;margin-right:calc(1rem * var(--tw-space-x-reverse));margin-left:calc(1rem * calc(1 - var(--tw-space-x-reverse)))}.space-y-2 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.5rem * var(--tw-space-y-reverse))}.space-y-4 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1rem * var(--tw-space-y-reverse))}.space-y-6 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1.5rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1.5rem * var(--tw-space-y-reverse))}.space-y-8 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(2rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(2rem * var(--tw-space-y-reverse))}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:0.5rem}.rounded-r-lg{border-top-right-radius:0.5rem;border-bottom-right-radius:0.5rem}.border{border-width:1px}.border-b{border-bottom-width:1px}.border-l-4{border-left-width:4px}.border-r{border-right-width:1px}.border-t{border-top-width:1px}.border-gray-200{--tw-border-opacity:1;border-color:rgb(229 231 235 / var(--tw-border-opacity, 1))}.border-green-500{--tw-border-opacity:1;border-color:rgb(34 197 94 / var(--tw-border-opacity, 1))}.border-yellow-400{--tw-border-opacity:1;border-color:rgb(250 204 21 / var(--tw-border-opacity, 1))}.bg-blue-600{--tw-bg-opacity:1;background-color:rgb(37 99 235 / var(--tw-bg-opacity, 1))}.bg-gray-200{--tw-bg-opacity:1;background-color:rgb(229 231 235 / var(--tw-bg-opacity, 1))}.bg-gray-50{--tw-bg-opacity:1;background-color:rgb(249 250 251 / var(--tw-bg-opacity, 1))}.bg-green-50{--tw-bg-opacity:1;background-color:rgb(240 253 244 / var(--tw-bg-opacity, 1))}.bg-stone-50{--tw-bg-opacity:1;background-color:rgb(250 250 249 / var(--tw-bg-opacity, 1))}.bg-white{--tw-bg-opacity:1;background-color:rgb(255 255 255 / var(--tw-bg-opacity, 1))}.bg-yellow-50{--tw-bg-opacity:1;background-color:rgb(254 252 232 / var(--tw-bg-opacity, 1))}.p-2{padding:0.5rem}.p-3{padding:0.75rem}.p-4{padding:1rem}.p-5{padding:1.25rem}.p-6{padding:1.5rem}.p-8{padding:2rem}.pb-4{padding-bottom:1rem}.pl-4{padding-left:1rem}.pt-4{padding-top:1rem}.text-center{text-align:center}.text-2xl{font-size:1.5rem;line-height:2rem}.text-3xl{font-size:1.875rem;line-height:2.25rem}.text-base{font-size:1rem;line-height:1.5rem}.text-lg{font-size:1.125rem;line-height:1.75rem}.text-sm{font-size:0.875rem;line-height:1.25rem}.text-xl{font-size:1.25rem;line-height:1.75rem}.font-bold{font-weight:700}.font-semibold{font-weight:600}.text-blue-600{--tw-text-opacity:1;color:rgb(37 99 235 / var(--tw-text-opacity, 1))}.text-gray-500{--tw-text-opacity:1;color:rgb(107 114 128 / var(--tw-text-opacity, 1))}.text-gray-600{--tw-text-opacity:1;color:rgb(75 85 99 / var(--tw-text-opacity, 1))}.text-gray-700{--tw-text-opacity:1;color:rgb(55 65 81 / var(--tw-text-opacity, 1))}.text-gray-800{--tw-text-opacity:1;color:rgb(31 41 55 / var(--tw-text-opacity, 1))}.text-green-800{--tw-text-opacity:1;color:rgb(22 101 52 / var(--tw-text-opacity, 1))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.text-yellow-800{--tw-text-opacity:1;color:rgb(133 77 14 / var(--tw-text-opacity, 1))}.shadow-sm{--tw-shadow:0 1px 2px 0 rgb(0 0 0 / 0.05);--tw-shadow-colored:0 1px 2px 0 var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.transition-colors{transition-property:color, background-color, border-color, fill, stroke, -webkit-text-decoration-color;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke, -webkit-text-decoration-color;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.duration-200{transition-duration:200ms}.hover\:bg-blue-700:hover{--tw-bg-opacity:1;background-color:rgb(29 78 216 / var(--tw-bg-opacity, 1))}.hover\:bg-gray-100:hover{--tw-bg-opacity:1;background-color:rgb(243 244 246 / var(--tw-bg-opacity, 1))}.hover\:underline:hover{-webkit-text-decoration-line:underline;text-decoration-line:underline}@media (min-width: 768px){.md\:fixed{position:fixed}.md\:ml-64{margin-left:16rem}.md\:h-full{height:100%}.md\:w-64{width:16rem}.md\:grid-cols-2{grid-template-columns:repeat(2, minmax(0, 1fr))}.md\:flex-row{flex-direction:row}.md\:p-10{padding:2.5rem}.md\:p-6{padding:1.5rem}}</style></head>
+</head>
 <body class="bg-stone-50 text-gray-800">
 
     <div class="flex flex-col md:flex-row min-h-screen">
@@ -533,15 +47,15 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
                 </header>
                 <nav id="main-nav">
                     <ul class="space-y-2">
-                        <li><a href="#" class="nav-link flex items-center p-3 rounded-lg hover:bg-gray-100 transition-colors duration-200 active" data-target="intro">📋 소개</a></li>
+                        <li><a href="#" class="nav-link flex items-center p-3 rounded-lg hover:bg-gray-100 transition-colors duration-200" data-target="intro">📋 소개</a></li>
                         <li><a href="#" class="nav-link flex items-center p-3 rounded-lg hover:bg-gray-100 transition-colors duration-200" data-target="install">🚀 설치하기</a></li>
                         <li><a href="#" class="nav-link flex items-center p-3 rounded-lg hover:bg-gray-100 transition-colors duration-200" data-target="ui">🖥️ 화면 구성</a></li>
                         <li>
                             <p class="p-3 font-bold text-gray-600">🛠️ 주요 기능</p>
                             <ul class="pl-4 space-y-2">
-                                <li><a href="#" class="nav-link flex items-center p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200" data-target="feature-employee">- 보험료 고지내역 업로드</a></li>
-                                <li><a href="#" class="nav-link flex items-center p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200" data-target="feature-payroll">- 직원관리</a></li>
-                                <li><a href="#" class="nav-link flex items-center p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200" data-target="feature-payslip">- 급여 계산</a></li>
+                                <li><a href="#" class="nav-link flex items-center p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200" data-target="feature-employee">- 직원 관리</a></li>
+                                <li><a href="#" class="nav-link flex items-center p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200" data-target="feature-payroll">- 급여 계산</a></li>
+                                <li><a href="#" class="nav-link flex items-center p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200" data-target="feature-payslip">- 명세서 발송</a></li>
                                 <li><a href="#" class="nav-link flex items-center p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200" data-target="feature-settings">- 환경 설정</a></li>
                             </ul>
                         </li>
@@ -552,7 +66,7 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
             </div>
             <div class="mt-auto pt-4 space-y-2">
                  <a href="https://naver.me/xKtzLNai" target="_blank" rel="noopener noreferrer" class="block">
-                    <button id="download-btn" class="w-full flex items-center justify-center p-3 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition-colors duration-200">
+                    <button class="w-full flex items-center justify-center p-3 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition-colors duration-200">
                         <span class="mr-2">📥</span>
                         프로그램 다운로드
                     </button>
@@ -564,9 +78,10 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
         <main class="flex-1 md:ml-64 p-6 md:p-10">
             <div class="max-w-4xl mx-auto">
                 <!-- Introduction Section -->
-                <section id="intro" class="content-section active">
+                <section id="intro" class="content-section">
                     <header class="mb-8 border-b pb-4">
                         <h2 class="text-3xl font-bold text-gray-800">Salarium에 오신 것을 환영합니다!</h2>
+                        <p class="mt-2 text-lg text-gray-600">급여 관리, 이제 더 스마트하게 시작하세요.</p>
                     </header>
                     <div class="space-y-6 text-base">
                         <div class="bg-white p-6 rounded-lg shadow-sm border">
@@ -575,7 +90,7 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
                         </div>
                         <div class="bg-white p-6 rounded-lg shadow-sm border">
                             <h3 class="text-xl font-bold mb-2 text-blue-600">기대 효과</h3>
-                            <p>단순 반복 업무에서 벗어나 더 중요한 핵심 업무에 집중할 수 있도록 돕습니다. <br>정확하고 빠른 급여 처리로 업무 효율을 극대화하세요.</p>
+                            <p>단순 반복 업무에서 벗어나 더 중요한 핵심 업무에 집중할 수 있도록 돕습니다. 정확하고 빠른 급여 처리로 업무 효율을 극대화하세요.</p>
                         </div>
                     </div>
                 </section>
@@ -603,7 +118,7 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
                         </div>
                         <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-r-lg">
                             <h4 class="font-bold">자동 업데이트</h4>
-                            <p class="text-yellow-800">프로그램은 항상 최신 버전을 유지해주세요.</p>
+                            <p class="text-yellow-800">프로그램 시작 시 항상 최신 버전으로 자동 업데이트됩니다. 최상의 경험을 위해 인터넷 연결을 유지해주세요.</p>
                         </div>
                     </div>
                 </section>
@@ -614,25 +129,25 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
                         <h2 class="text-3xl font-bold text-gray-800">한눈에 보는 메인 화면</h2>
                     </header>
                     <div class="bg-white p-6 rounded-lg shadow-sm border space-y-6">
-                    <div class="w-full bg-gray-200 flex items-center justify-center rounded-lg mb-4" style="aspect-ratio: 4/1;">
-            <img src="main.png" alt="직원 추가 화면 스크린샷" class="w-full h-auto object-contain" style="max-width:100%;" />
+                        <div class="w-full h-80 bg-gray-200 flex items-center justify-center rounded-lg">
+                            <p class="text-gray-500">프로그램 메인 화면 스크린샷 영역</p>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-center">
                             <div class="bg-gray-50 p-4 rounded-lg">
-                                <h4 class="font-bold">1. 메뉴</h4>
+                                <h4 class="font-bold">1. 메인 메뉴</h4>
                                 <p class="text-sm text-gray-600">핵심 기능으로 빠르게 이동</p>
                             </div>
                             <div class="bg-gray-50 p-4 rounded-lg">
-                                <h4 class="font-bold">2. 메인 화면</h4>
-                                <p class="text-sm text-gray-600">데이터 업로드, 급여계산, 직원관리 기능</p>
+                                <h4 class="font-bold">2. 직원 목록</h4>
+                                <p class="text-sm text-gray-600">관리 중인 모든 직원 확인</p>
                             </div>
                             <div class="bg-gray-50 p-4 rounded-lg">
-                                <h4 class="font-bold">3. 설정</h4>
-                                <p class="text-sm text-gray-600">프로그램 변수 및 도움말</p>
+                                <h4 class="font-bold">3. 작업 영역</h4>
+                                <p class="text-sm text-gray-600">실제 급여 계산 및 정보 입력</p>
                             </div>
                              <div class="bg-gray-50 p-4 rounded-lg">
-                                <h4 class="font-bold">4. 테마 변경</h4>
-                                <p class="text-sm text-gray-600">Dark & Light 테마 변경 버튼</p>
+                                <h4 class="font-bold">4. 상태 표시줄</h4>
+                                <p class="text-sm text-gray-600">중요 알림 및 현재 상태 표시</p>
                             </div>
                         </div>
                     </div>
@@ -641,19 +156,19 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
                 <!-- Feature: Employee Management -->
                 <section id="feature-employee" class="content-section">
                     <header class="mb-8 border-b pb-4">
-                        <h2 class="text-3xl font-bold text-gray-800">간편한 보험료 적용</h2>
+                        <h2 class="text-3xl font-bold text-gray-800">간편한 직원 정보 관리</h2>
                     </header>
                     <div class="space-y-6">
-                    <div class="bg-white p-6 rounded-lg shadow-sm border">
-                        <h3 class="text-xl font-bold mb-4 text-blue-600">보험료 고지내역 업로드</h3>
-                        <div class="w-full bg-gray-200 flex items-center justify-center rounded-lg mb-4" style="aspect-ratio: 4/1;">
-                                <img src="ky.png" alt="직원 추가 화면 스크린샷" class="w-full max-w-full h-auto object-contain" />
+                        <div class="bg-white p-6 rounded-lg shadow-sm border">
+                            <h3 class="text-xl font-bold mb-4 text-blue-600">직원 추가</h3>
+                            <div class="w-full h-60 bg-gray-200 flex items-center justify-center rounded-lg mb-4">
+                                <p class="text-gray-500">직원 추가 화면 스크린샷</p>
                             </div>
-                            <p>사회보험통합징수포털에서 받은 건강보험료, 연금보험료 파일을 업로드하여 직원별로 적용합니다.</p>
+                            <p>'직원 추가' 버튼을 클릭한 후, 이름, 입사일, 급여 정보 등 필수 항목을 입력하여 새로운 직원을 등록할 수 있습니다.</p>
                         </div>
                         <div class="bg-white p-6 rounded-lg shadow-sm border">
-                            <h3 class="text-xl font-bold mb-4 text-blue-600">처리 순서</h3>
-                            <p>건강보험료, 연금보험료 csv파일 업로드 후 우측 하단 적용하고 직원관리로 이동 버튼을 클릭합니다.</p>
+                            <h3 class="text-xl font-bold mb-4 text-blue-600">정보 수정 및 삭제</h3>
+                            <p>직원 목록에서 특정 직원을 선택하여 정보를 수정하거나, 더 이상 관리하지 않는 직원의 정보를 삭제할 수 있습니다.</p>
                         </div>
                     </div>
                 </section>
@@ -661,32 +176,45 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
                 <!-- Feature: Payroll Calculation -->
                 <section id="feature-payroll" class="content-section">
                     <header class="mb-8 border-b pb-4">
-                        <h2 class="text-3xl font-bold text-gray-800">간편한 직원 정보 관리</h2>
+                        <h2 class="text-3xl font-bold text-gray-800">급여 계산하기 (단계별 가이드)</h2>
                     </header>
-                    <div class="space-y-6">
-                    <div class="bg-white p-6 rounded-lg shadow-sm border">
-                        <h3 class="text-xl font-bold mb-4 text-blue-600">직원 관리</h3>
-                        <div class="w-full bg-gray-200 flex items-center justify-center rounded-lg mb-4" style="aspect-ratio: 4/1;">
-                                <img src="emp.png" alt="직원 추가 화면 스크린샷" class="w-full max-w-full h-auto object-contain" />
+                     <div class="space-y-6">
+                        <div class="bg-white p-6 rounded-lg shadow-sm border">
+                            <div class="flex items-start space-x-4">
+                                <div class="flex-shrink-0 w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">1</div>
+                                <div>
+                                    <h3 class="text-xl font-bold mb-2">보험료 엑셀 파일 업로드</h3>
+                                    <p class="text-gray-700">사회보험통합징수 사이트에서 다운로드한 연금보험, 건강보험료 산출내역(CSV) 파일을 프로그램에 업로드합니다.</p>
+                                    <p class="text-sm text-gray-500 mt-2">※ 경로: 고지내역조회 → 보험료 산출내역 조회 → 연금/건강 선택 → 산출내역출력하기</p>
+                                </div>
                             </div>
-                            <p>각 직원별로 급여 및 혜택내역, 기간을 관리하는 페이지입니다.</p>
                         </div>
                         <div class="bg-white p-6 rounded-lg shadow-sm border">
-                            <h3 class="text-xl font-bold mb-4 text-blue-600">처리 순서</h3>
-                            <p>1. 급여계산을 실행 할 직원을 선택하여 우측상단 파란색 선택직원 급여계산버튼을 클릭합니다.</p>
+                            <div class="flex items-start space-x-4">
+                                <div class="flex-shrink-0 w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">2</div>
+                                <div>
+                                    <h3 class="text-xl font-bold mb-2">업로드 내역 적용</h3>
+                                    <p class="text-gray-700">업로드된 보험료가 정확한지 확인한 후, [적용하고 직원관리로 이동] 버튼을 클릭하여 직원 정보에 반영합니다.</p>
+                                </div>
+                            </div>
                         </div>
                         <div class="bg-white p-6 rounded-lg shadow-sm border">
-                            <h3 class="text-xl font-bold mb-4 text-blue-600">기능</h3>
-                            <p>1. 직원관리 페이지 엑셀 내보내기 : 현재 페이지의 내용을 엑셀로 내보냅니다.</p>
-                            <p>2. 직원관리 페이지 엑셀 불러오기 : 편집 후 엑셀 파일을 불러옵니다.</p>
-                            <p>3. 직원관리 페이지 DB 저장 : 현재 페이지의 내용을 DB에 저장합니다.(되돌리기 불가능)</p>
-                            <p>4. 직원관리 페이지 DB 불러오기 : DB에 저장된 내용을 불러옵니다.</p>
-                            <p>5. 정렬 및 검색</p>
-                            <P>6. 직원 목록 우클릭시 컨텍스트 메뉴로 라인 추가/제거가 가능합니다.</P>
+                            <div class="flex items-start space-x-4">
+                                <div class="flex-shrink-0 w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">3</div>
+                                <div>
+                                    <h3 class="text-xl font-bold mb-2">급여 계산 실행</h3>
+                                    <p class="text-gray-700">직원관리 탭에서 급여를 계산할 직원을 선택한 후, [선택직원 급여계산] 버튼을 클릭합니다.</p>
+                                </div>
+                            </div>
                         </div>
-                            <div class="bg-green-50 border-l-4 border-green-500 p-4 rounded-r-lg">
-                            <h4 class="font-bold">백업기능</h4>
-                            <p>※ 매일 최초 실행시 엑셀파일이 설치 경로에 백업됩니다. 혹시나 DB에 잘못 덮어씌웠을 경우 백업파일을 불러와주세요.</p>
+                        <div class="bg-white p-6 rounded-lg shadow-sm border">
+                            <div class="flex items-start space-x-4">
+                                <div class="flex-shrink-0 w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">4</div>
+                                <div>
+                                    <h3 class="text-xl font-bold mb-2">결과 확인 및 명세서 발송</h3>
+                                    <p class="text-gray-700">계산 완료 후, 직원을 선택하여 개별 급여명세서를 출력하거나 이메일로 발송할 수 있습니다. 전체 명세서 출력 및 전체 메일 발송도 가능합니다.</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -694,36 +222,20 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
                 <!-- Feature: Payslip Dispatch -->
                 <section id="feature-payslip" class="content-section">
                     <header class="mb-8 border-b pb-4">
-                        <h2 class="text-3xl font-bold text-gray-800">간편한 직원별 급여 계산</h2>
+                        <h2 class="text-3xl font-bold text-gray-800">클릭 한 번으로 급여 명세서 발송</h2>
                     </header>
-                    <div class="space-y-6">
-                    <div class="bg-white p-6 rounded-lg shadow-sm border">
-                        <h3 class="text-xl font-bold mb-4 text-blue-600">급여 계산</h3>
-                        <div class="w-full bg-gray-200 flex items-center justify-center rounded-lg mb-4" style="aspect-ratio: 4/1;">
-                                <img src="cal.png" alt="직원 추가 화면 스크린샷" class="w-full max-w-full h-auto object-contain" />
-                            </div>
-                            <p>선택된 직원 또는 불러온 전체 직원에 대하여 급여 계산 및 결과물(PDF)를 출력하는 페이지입니다.</p>
-                        </div>
+                     <div class="space-y-6">
                         <div class="bg-white p-6 rounded-lg shadow-sm border">
-                            <h3 class="text-xl font-bold mb-4 text-blue-600">처리 순서</h3>
-                            <p>1. 급여계산을 실행 할 직원을 선택하면 즉시 급여가 계산됩니다.</p>
-                            <p>2. 급여 계산 후 PDF출력, 메일 발송이 가능합니다.</p>
+                            <h3 class="text-xl font-bold mb-4 text-blue-600">발송 방법</h3>
+                            <p>급여 계산이 완료된 후 '명세서 발송' 버튼을 클릭하면, 등록된 직원의 이메일 주소로 급여 명세서가 자동으로 발송됩니다.</p>
                         </div>
-                        <div class="bg-white p-6 rounded-lg shadow-sm border">
-                            <h3 class="text-xl font-bold mb-4 text-blue-600">기능</h3>
-                            <p>1. 직원 직급별 필터</p>
-                            <p>2. 보험료 고지내역 업로드가 되었다면 고지내역에 있는 월을 급여계산월로 강제합니다. </p>
-                            <p>3. 우측 하단에 각종 수당 및 혜택에 대한 기간을 표시합니다.</p>
-                            <p>4. 국민연금/건강보험/장기요양보험료는 고지내역의 값을 가져옵니다.</p>
-                            <p>5. 급여 계산월에 연장근무, 휴일근무가 있을 경우 상세 내역을 제공합니다.</p>
-                            <p>6. PDF는 주민등록번호 앞자리가 비밀번호입니다.</p>
-                        </div>
-                            <div class="bg-green-50 border-l-4 border-green-500 p-4 rounded-r-lg">
-                            <h4 class="font-bold">주의</h4>
-                            <p>※ 보낸 메일은 회수가 되지 않습니다. 주의하세요.</p>
+                        <div class="bg-green-50 border-l-4 border-green-500 p-4 rounded-r-lg">
+                            <h4 class="font-bold">강력한 보안</h4>
+                            <p class="text-green-800">모든 급여 명세서는 암호화되어 안전하게 전송되므로 민감한 개인정보를 보호할 수 있습니다.</p>
                         </div>
                     </div>
                 </section>
+
                 <!-- Feature: Settings -->
                 <section id="feature-settings" class="content-section">
                     <header class="mb-8 border-b pb-4">
@@ -733,19 +245,16 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
                         <div class="bg-white p-6 rounded-lg shadow-sm border">
                             <h3 class="text-xl font-bold mb-4 text-blue-600">일반 설정</h3>
                             <ul class="list-disc list-inside space-y-2">
-                                <li><span class="font-semibold">데스크톱 알림 사용:</span> 알림을 바탕화면에 표시합니다.</li>
-                                <li><span class="font-semibold">자동 백업 사용:</span> 1일 1회 최초 실행시 직원목록을 엑셀파일로 백업합니다.</li>
+                                <li><span class="font-semibold">데스크톱 알림 사용:</span> 중요한 알림을 바탕화면에 표시합니다.</li>
+                                <li><span class="font-semibold">자동 백업 사용:</span> 데이터를 주기적으로 자동 백업하여 안전하게 보관합니다.</li>
                                 <li><span class="font-semibold">앱 시작 시 자동 업데이트 확인:</span> 프로그램을 시작할 때마다 최신 버전이 있는지 확인합니다.</li>
-                                <li><span class="font-semibold">세액표 업로드:</span> 간이세액표가 개정되었을 경우 업로드해야합니다.</li>
+                                <li><span class="font-semibold">알림 표시 시간:</span> 데스크톱 알림이 화면에 표시되는 시간을 초 단위로 조절합니다.</li>
                             </ul>
                         </div>
                         <div class="bg-white p-6 rounded-lg shadow-sm border">
                             <h3 class="text-xl font-bold mb-4 text-blue-600">회사 설정</h3>
                             <p>회사 정보, 4대 보험 요율, 급여 명세서 발송을 위한 이메일(SMTP) 서버 정보 등 급여 관리에 필요한 핵심 정보를 설정하고 관리할 수 있습니다.</p>
-                            <ul class="list-disc list-inside space-y-2">
-                            <p> </p>
-                            <li><span class="font-semibold"></span> 고용보험 요율 및 국민연금 상하한액이 개정되었을 경우 수정해야합니다.</li>
-                          </div>
+                        </div>
                     </div>
                 </section>
 
@@ -790,7 +299,8 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
                         <div class="bg-white p-8 rounded-lg shadow-sm border text-center">
                             <p class="text-lg mb-4">프로그램 사용 중 궁금한 점이나 문제가 발생하면 언제든지 연락 주세요.</p>
                             <div class="space-y-2">
-                                <p><span class="font-bold">이메일:</span> han0e@sjinnotech.com</p>
+                                <p><span class="font-bold">이메일:</span> your-email@example.com</p>
+                                <p><span class="font-bold">웹사이트:</span> <a href="#" class="text-blue-600 hover:underline">your-website.com</a></p>
                             </div>
                         </div>
                         <div class="bg-white p-6 rounded-lg shadow-sm border">
@@ -812,7 +322,6 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
             const navLinks = document.querySelectorAll('.nav-link');
             const contentSections = document.querySelectorAll('.content-section');
             const faqQuestions = document.querySelectorAll('.faq-question');
-            const downloadBtn = document.getElementById('download-btn');
 
             function showSection(targetId) {
                 contentSections.forEach(section => {
@@ -867,25 +376,11 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
                 });
             });
 
-            downloadBtn.addEventListener('click', function() {
-                const htmlContent = document.documentElement.outerHTML;
-                const blob = new Blob([htmlContent], { type: 'text/html' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'Salarium_Manual.html';
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
-            });
-
             // Show the first section by default
             const firstSectionId = navLinks[0].dataset.target;
             showSection(firstSectionId);
             updateActiveLink(firstSectionId);
         });
     </script>
-
-
-</body></html>
+</body>
+</html>
