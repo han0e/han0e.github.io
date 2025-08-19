@@ -122,140 +122,288 @@
                     </div>
                 </section>
 
-                <!-- UI Overview Section -->
-                <section id="ui" class="content-section">
-                    <header class="mb-8 border-b pb-4">
-                        <h2 class="text-3xl font-bold text-gray-800">한눈에 보는 메인 화면</h2>
-                    </header>
-                    <div class="bg-white p-6 rounded-lg shadow-sm border space-y-6">
-                        <div class="w-full h-80 bg-gray-200 flex items-center justify-center rounded-lg">
-                            <p class="text-gray-500">프로그램 메인 화면 스크린샷 영역</p>
-                        </div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-center">
-                            <div class="bg-gray-50 p-4 rounded-lg">
-                                <h4 class="font-bold">1. 메인 메뉴</h4>
-                                <p class="text-sm text-gray-600">핵심 기능으로 빠르게 이동</p>
-                            </div>
-                            <div class="bg-gray-50 p-4 rounded-lg">
-                                <h4 class="font-bold">2. 직원 목록</h4>
-                                <p class="text-sm text-gray-600">관리 중인 모든 직원 확인</p>
-                            </div>
-                            <div class="bg-gray-50 p-4 rounded-lg">
-                                <h4 class="font-bold">3. 작업 영역</h4>
-                                <p class="text-sm text-gray-600">실제 급여 계산 및 정보 입력</p>
-                            </div>
-                             <div class="bg-gray-50 p-4 rounded-lg">
-                                <h4 class="font-bold">4. 상태 표시줄</h4>
-                                <p class="text-sm text-gray-600">중요 알림 및 현재 상태 표시</p>
-                            </div>
-                        </div>
-                    </div>
-                </section>
 
-                <!-- Feature: Employee Management -->
-                <section id="feature-employee" class="content-section">
-                    <header class="mb-8 border-b pb-4">
-                        <h2 class="text-3xl font-bold text-gray-800">간편한 직원 정보 관리</h2>
-                    </header>
-                    <div class="space-y-6">
-                        <div class="bg-white p-6 rounded-lg shadow-sm border">
-                            <h3 class="text-xl font-bold mb-4 text-blue-600">직원 추가</h3>
-                            <div class="w-full h-60 bg-gray-200 flex items-center justify-center rounded-lg mb-4">
-                                <p class="text-gray-500">직원 추가 화면 스크린샷</p>
-                            </div>
-                            <p>'직원 추가' 버튼을 클릭한 후, 이름, 입사일, 급여 정보 등 필수 항목을 입력하여 새로운 직원을 등록할 수 있습니다.</p>
-                        </div>
-                        <div class="bg-white p-6 rounded-lg shadow-sm border">
-                            <h3 class="text-xl font-bold mb-4 text-blue-600">정보 수정 및 삭제</h3>
-                            <p>직원 목록에서 특정 직원을 선택하여 정보를 수정하거나, 더 이상 관리하지 않는 직원의 정보를 삭제할 수 있습니다.</p>
-                        </div>
-                    </div>
-                </section>
 
-                <!-- Feature: Payroll Calculation -->
-                <section id="feature-payroll" class="content-section">
-                    <header class="mb-8 border-b pb-4">
-                        <h2 class="text-3xl font-bold text-gray-800">급여 계산하기 (단계별 가이드)</h2>
-                    </header>
-                     <div class="space-y-6">
-                        <div class="bg-white p-6 rounded-lg shadow-sm border">
-                            <div class="flex items-start space-x-4">
-                                <div class="flex-shrink-0 w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">1</div>
-                                <div>
-                                    <h3 class="text-xl font-bold mb-2">보험료 엑셀 파일 업로드</h3>
-                                    <p class="text-gray-700">사회보험통합징수 사이트에서 다운로드한 연금보험, 건강보험료 산출내역(CSV) 파일을 프로그램에 업로드합니다.</p>
-                                    <p class="text-sm text-gray-500 mt-2">※ 경로: 고지내역조회 → 보험료 산출내역 조회 → 연금/건강 선택 → 산출내역출력하기</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="bg-white p-6 rounded-lg shadow-sm border">
-                            <div class="flex items-start space-x-4">
-                                <div class="flex-shrink-0 w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">2</div>
-                                <div>
-                                    <h3 class="text-xl font-bold mb-2">업로드 내역 적용</h3>
-                                    <p class="text-gray-700">업로드된 보험료가 정확한지 확인한 후, [적용하고 직원관리로 이동] 버튼을 클릭하여 직원 정보에 반영합니다.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="bg-white p-6 rounded-lg shadow-sm border">
-                            <div class="flex items-start space-x-4">
-                                <div class="flex-shrink-0 w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">3</div>
-                                <div>
-                                    <h3 class="text-xl font-bold mb-2">급여 계산 실행</h3>
-                                    <p class="text-gray-700">직원관리 탭에서 급여를 계산할 직원을 선택한 후, [선택직원 급여계산] 버튼을 클릭합니다.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="bg-white p-6 rounded-lg shadow-sm border">
-                            <div class="flex items-start space-x-4">
-                                <div class="flex-shrink-0 w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">4</div>
-                                <div>
-                                    <h3 class="text-xl font-bold mb-2">결과 확인 및 명세서 발송</h3>
-                                    <p class="text-gray-700">계산 완료 후, 직원을 선택하여 개별 급여명세서를 출력하거나 이메일로 발송할 수 있습니다. 전체 명세서 출력 및 전체 메일 발송도 가능합니다.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                
-                <!-- Feature: Payslip Dispatch -->
-                <section id="feature-payslip" class="content-section">
-                    <header class="mb-8 border-b pb-4">
-                        <h2 class="text-3xl font-bold text-gray-800">클릭 한 번으로 급여 명세서 발송</h2>
-                    </header>
-                     <div class="space-y-6">
-                        <div class="bg-white p-6 rounded-lg shadow-sm border">
-                            <h3 class="text-xl font-bold mb-4 text-blue-600">발송 방법</h3>
-                            <p>급여 계산이 완료된 후 '명세서 발송' 버튼을 클릭하면, 등록된 직원의 이메일 주소로 급여 명세서가 자동으로 발송됩니다.</p>
-                        </div>
-                        <div class="bg-green-50 border-l-4 border-green-500 p-4 rounded-r-lg">
-                            <h4 class="font-bold">강력한 보안</h4>
-                            <p class="text-green-800">모든 급여 명세서는 암호화되어 안전하게 전송되므로 민감한 개인정보를 보호할 수 있습니다.</p>
-                        </div>
-                    </div>
-                </section>
 
-                <!-- Feature: Settings -->
-                <section id="feature-settings" class="content-section">
-                    <header class="mb-8 border-b pb-4">
-                        <h2 class="text-3xl font-bold text-gray-800">사용자 맞춤 환경 설정</h2>
-                    </header>
-                    <div class="space-y-8">
-                        <div class="bg-white p-6 rounded-lg shadow-sm border">
-                            <h3 class="text-xl font-bold mb-4 text-blue-600">일반 설정</h3>
-                            <ul class="list-disc list-inside space-y-2">
-                                <li><span class="font-semibold">데스크톱 알림 사용:</span> 중요한 알림을 바탕화면에 표시합니다.</li>
-                                <li><span class="font-semibold">자동 백업 사용:</span> 데이터를 주기적으로 자동 백업하여 안전하게 보관합니다.</li>
-                                <li><span class="font-semibold">앱 시작 시 자동 업데이트 확인:</span> 프로그램을 시작할 때마다 최신 버전이 있는지 확인합니다.</li>
-                                <li><span class="font-semibold">알림 표시 시간:</span> 데스크톱 알림이 화면에 표시되는 시간을 초 단위로 조절합니다.</li>
-                            </ul>
-                        </div>
-                        <div class="bg-white p-6 rounded-lg shadow-sm border">
-                            <h3 class="text-xl font-bold mb-4 text-blue-600">회사 설정</h3>
-                            <p>회사 정보, 4대 보험 요율, 급여 명세서 발송을 위한 이메일(SMTP) 서버 정보 등 급여 관리에 필요한 핵심 정보를 설정하고 관리할 수 있습니다.</p>
-                        </div>
-                    </div>
-                </section>
+                <!-- UI Overview Section -->
+
+                <section id="ui" class="content-section">
+
+                    <header class="mb-8 border-b pb-4">
+
+                        <h2 class="text-3xl font-bold text-gray-800">한눈에 보는 메인 화면</h2>
+
+                    </header>
+
+                    <div class="bg-white p-6 rounded-lg shadow-sm border space-y-6">
+
+                    <div class="w-full bg-gray-200 flex items-center justify-center rounded-lg mb-4" style="aspect-ratio: 4/1;">
+
+            <img src="main.png" alt="직원 추가 화면 스크린샷" class="w-full h-auto object-contain" style="max-width:100%;" />
+
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-center">
+
+                            <div class="bg-gray-50 p-4 rounded-lg">
+
+                                <h4 class="font-bold">1. 메뉴</h4>
+
+                                <p class="text-sm text-gray-600">핵심 기능으로 빠르게 이동</p>
+
+                            </div>
+
+                            <div class="bg-gray-50 p-4 rounded-lg">
+
+                                <h4 class="font-bold">2. 메인 화면</h4>
+
+                                <p class="text-sm text-gray-600">데이터 업로드, 급여계산, 직원관리 기능</p>
+
+                            </div>
+
+                            <div class="bg-gray-50 p-4 rounded-lg">
+
+                                <h4 class="font-bold">3. 설정</h4>
+
+                                <p class="text-sm text-gray-600">프로그램 변수 및 도움말</p>
+
+                            </div>
+
+                             <div class="bg-gray-50 p-4 rounded-lg">
+
+                                <h4 class="font-bold">4. 테마 변경</h4>
+
+                                <p class="text-sm text-gray-600">Dark & Light 테마 변경 버튼</p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+
+                <!-- Feature: Employee Management -->
+
+                <section id="feature-employee" class="content-section">
+
+                    <header class="mb-8 border-b pb-4">
+
+                        <h2 class="text-3xl font-bold text-gray-800">간편한 보험료 적용</h2>
+
+                    </header>
+
+                    <div class="space-y-6">
+
+                    <div class="bg-white p-6 rounded-lg shadow-sm border">
+
+                        <h3 class="text-xl font-bold mb-4 text-blue-600">보험료 고지내역 업로드</h3>
+
+                        <div class="w-full bg-gray-200 flex items-center justify-center rounded-lg mb-4" style="aspect-ratio: 4/1;">
+
+                                <img src="ky.png" alt="직원 추가 화면 스크린샷" class="w-full max-w-full h-auto object-contain" />
+
+                            </div>
+
+                            <p>사회보험통합징수포털에서 받은 건강보험료, 연금보험료 파일을 업로드하여 직원별로 적용합니다.</p>
+
+                        </div>
+
+                        <div class="bg-white p-6 rounded-lg shadow-sm border">
+
+                            <h3 class="text-xl font-bold mb-4 text-blue-600">처리 순서</h3>
+
+                            <p>건강보험료, 연금보험료 csv파일 업로드 후 우측 하단 적용하고 직원관리로 이동 버튼을 클릭합니다.</p>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+
+                <!-- Feature: Payroll Calculation -->
+
+                <section id="feature-payroll" class="content-section">
+
+                    <header class="mb-8 border-b pb-4">
+
+                        <h2 class="text-3xl font-bold text-gray-800">간편한 직원 정보 관리</h2>
+
+                    </header>
+
+                    <div class="space-y-6">
+
+                    <div class="bg-white p-6 rounded-lg shadow-sm border">
+
+                        <h3 class="text-xl font-bold mb-4 text-blue-600">직원 관리</h3>
+
+                        <div class="w-full bg-gray-200 flex items-center justify-center rounded-lg mb-4" style="aspect-ratio: 4/1;">
+
+                                <img src="emp.png" alt="직원 추가 화면 스크린샷" class="w-full max-w-full h-auto object-contain" />
+
+                            </div>
+
+                            <p>각 직원별로 급여 및 혜택내역, 기간을 관리하는 페이지입니다.</p>
+
+                        </div>
+
+                        <div class="bg-white p-6 rounded-lg shadow-sm border">
+
+                            <h3 class="text-xl font-bold mb-4 text-blue-600">처리 순서</h3>
+
+                            <p>1. 급여계산을 실행 할 직원을 선택하여 우측상단 파란색 선택직원 급여계산버튼을 클릭합니다.</p>
+
+                        </div>
+
+                        <div class="bg-white p-6 rounded-lg shadow-sm border">
+
+                            <h3 class="text-xl font-bold mb-4 text-blue-600">기능</h3>
+
+                            <p>1. 직원관리 페이지 엑셀 내보내기 : 현재 페이지의 내용을 엑셀로 내보냅니다.</p>
+
+                            <p>2. 직원관리 페이지 엑셀 불러오기 : 편집 후 엑셀 파일을 불러옵니다.</p>
+
+                            <p>3. 직원관리 페이지 DB 저장 : 현재 페이지의 내용을 DB에 저장합니다.(되돌리기 불가능)</p>
+
+                            <p>4. 직원관리 페이지 DB 불러오기 : DB에 저장된 내용을 불러옵니다.</p>
+
+                            <p>5. 정렬 및 검색</p>
+
+                            <P>6. 직원 목록 우클릭시 컨텍스트 메뉴로 라인 추가/제거가 가능합니다.</P>
+
+                        </div>
+
+                            <div class="bg-green-50 border-l-4 border-green-500 p-4 rounded-r-lg">
+
+                            <h4 class="font-bold">백업기능</h4>
+
+                            <p>※ 매일 최초 실행시 엑셀파일이 설치 경로에 백업됩니다. 혹시나 DB에 잘못 덮어씌웠을 경우 백업파일을 불러와주세요.</p>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+                
+
+                <!-- Feature: Payslip Dispatch -->
+
+                <section id="feature-payslip" class="content-section">
+
+                    <header class="mb-8 border-b pb-4">
+
+                        <h2 class="text-3xl font-bold text-gray-800">간편한 직원별 급여 계산</h2>
+
+                    </header>
+
+                    <div class="space-y-6">
+
+                    <div class="bg-white p-6 rounded-lg shadow-sm border">
+
+                        <h3 class="text-xl font-bold mb-4 text-blue-600">급여 계산</h3>
+
+                        <div class="w-full bg-gray-200 flex items-center justify-center rounded-lg mb-4" style="aspect-ratio: 4/1;">
+
+                                <img src="cal.png" alt="직원 추가 화면 스크린샷" class="w-full max-w-full h-auto object-contain" />
+
+                            </div>
+
+                            <p>선택된 직원 또는 불러온 전체 직원에 대하여 급여 계산 및 결과물(PDF)를 출력하는 페이지입니다.</p>
+
+                        </div>
+
+                        <div class="bg-white p-6 rounded-lg shadow-sm border">
+
+                            <h3 class="text-xl font-bold mb-4 text-blue-600">처리 순서</h3>
+
+                            <p>1. 급여계산을 실행 할 직원을 선택하면 즉시 급여가 계산됩니다.</p>
+
+                            <p>2. 급여 계산 후 PDF출력, 메일 발송이 가능합니다.</p>
+
+                        </div>
+
+                        <div class="bg-white p-6 rounded-lg shadow-sm border">
+
+                            <h3 class="text-xl font-bold mb-4 text-blue-600">기능</h3>
+
+                            <p>1. 직원 직급별 필터</p>
+
+                            <p>2. 보험료 고지내역 업로드가 되었다면 고지내역에 있는 월을 급여계산월로 강제합니다. </p>
+
+                            <p>3. 우측 하단에 각종 수당 및 혜택에 대한 기간을 표시합니다.</p>
+
+                            <p>4. 국민연금/건강보험/장기요양보험료는 고지내역의 값을 가져옵니다.</p>
+
+                            <p>5. 급여 계산월에 연장근무, 휴일근무가 있을 경우 상세 내역을 제공합니다.</p>
+
+                            <p>6. PDF는 주민등록번호 앞자리가 비밀번호입니다.</p>
+
+                        </div>
+
+                            <div class="bg-green-50 border-l-4 border-green-500 p-4 rounded-r-lg">
+
+                            <h4 class="font-bold">주의</h4>
+
+                            <p>※ 보낸 메일은 회수가 되지 않습니다. 주의하세요.</p>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+                <!-- Feature: Settings -->
+
+                <section id="feature-settings" class="content-section">
+
+                    <header class="mb-8 border-b pb-4">
+
+                        <h2 class="text-3xl font-bold text-gray-800">사용자 맞춤 환경 설정</h2>
+
+                    </header>
+
+                    <div class="space-y-8">
+
+                        <div class="bg-white p-6 rounded-lg shadow-sm border">
+
+                            <h3 class="text-xl font-bold mb-4 text-blue-600">일반 설정</h3>
+
+                            <ul class="list-disc list-inside space-y-2">
+
+                                <li><span class="font-semibold">데스크톱 알림 사용:</span> 알림을 바탕화면에 표시합니다.</li>
+
+                                <li><span class="font-semibold">자동 백업 사용:</span> 1일 1회 최초 실행시 직원목록을 엑셀파일로 백업합니다.</li>
+
+                                <li><span class="font-semibold">앱 시작 시 자동 업데이트 확인:</span> 프로그램을 시작할 때마다 최신 버전이 있는지 확인합니다.</li>
+
+                                <li><span class="font-semibold">세액표 업로드:</span> 간이세액표가 개정되었을 경우 업로드해야합니다.</li>
+
+                            </ul>
+
+                        </div>
+
+                        <div class="bg-white p-6 rounded-lg shadow-sm border">
+
+                            <h3 class="text-xl font-bold mb-4 text-blue-600">회사 설정</h3>
+
+                            <p>회사 정보, 4대 보험 요율, 급여 명세서 발송을 위한 이메일(SMTP) 서버 정보 등 급여 관리에 필요한 핵심 정보를 설정하고 관리할 수 있습니다.</p>
+
+                            <ul class="list-disc list-inside space-y-2">
+
+                            <p> </p>
+
+                            <li><span class="font-semibold"></span> 고용보험 요율 및 국민연금 상하한액이 개정되었을 경우 수정해야합니다.</li>
+
+                          </div>
+
+                    </div>
+
+                </section>
 
                 <!-- FAQ Section -->
                 <section id="faq" class="content-section">
